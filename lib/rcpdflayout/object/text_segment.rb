@@ -38,6 +38,8 @@ module RcPdfLayout
 
         # Create an image with our text in it
         @image = self.class.create_image do |mg|
+          mg.density(ppi)
+
           mg.background('transparent')
           mg.fill(@color)
           mg.font(@font_name)
