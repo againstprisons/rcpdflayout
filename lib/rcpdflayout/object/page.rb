@@ -39,8 +39,11 @@ module RcPdfLayout
         # Array of [[pos_x, pos_y], image] of this page's children
         final_children = @children.map do |child|
           ch_pos_px = child.position_mm.map { |mm| ((mm * RcPdfLayout::MM_TO_INCH) * ppi).to_i }
-          ch_img = child.render_final(opts.merge({ force_size: calculate_child_size(child, ppi) }))
 
+          ch_opts = {}
+          ch_opts[:force_size] = calculate_child_size(child, ppi) unless child.size_mm.map(&:zero?).any?
+
+          ch_img = child.render_final(opts.merge(ch_opts))
           [ch_pos_px, ch_img]
         end
 
