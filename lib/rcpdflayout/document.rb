@@ -29,7 +29,11 @@ module RcPdfLayout
       imgwrite_opts = opts.fetch(:image_write_opts, {})
       page_opts = opts.fetch(:page_opts, {})
 
-      # Render each page, write it's image to our temp dir
+      # Get the maximum page PPI
+      max_ppi = @pages.map(&:ppi).max.to_s
+      page_opts.merge!({ force_ppi: max_ppi })
+
+      # Render each page, resize it to match our max PPI, and write the image
       @pages.each_with_index do |page, idx|
         page_image = page.render_final(page_opts)
         page_path = File.join(tempdir, "page-#{idx}.png")
@@ -37,9 +41,6 @@ module RcPdfLayout
 
         page_files << page_path
       end
-
-      # Get the maximum page PPI
-      max_ppi = @pages.map(&:ppi).max.to_s
 
       # Compose a PDF from the page images
       MiniMagick::Tool::Magick.new(whiny: true) do |mg|

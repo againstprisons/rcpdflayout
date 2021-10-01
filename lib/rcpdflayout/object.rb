@@ -10,7 +10,8 @@ module RcPdfLayout
     attr_accessor :size_mm
     # Number of pixels per inch for this object
     attr_accessor :ppi
-    # The image containing this object's data
+    # The image containing this object's data, or +nil+ if the image hasn't
+    # been created yet
     attr_accessor :image
 
     # Create a blank image object.
@@ -20,7 +21,7 @@ module RcPdfLayout
     # @yield [MiniMagick::Tool::Magick]
     # @return [MiniMagick::Image] Created image object
     def self.create_image(&block)
-      block = Proc.new { |_| nil } unless block_given?
+      block = proc { |_| } unless block_given?
 
       MiniMagick::Image.create('.png', false) do |tf|
         out = MiniMagick::Tool::Magick.new do |mg|
@@ -45,13 +46,26 @@ module RcPdfLayout
     #   +width, height+, in millimeters
     # @param ppi [Integer] Number of pixels per inch for this object, used for
     #   creating the base image object, and final rendering
-    def initialize(position_mm, size_mm, ppi)
+    # @param opts [Hash] Options hash
+    # @param opts :defer_image [true, false] (true)
+    #   Whether to defer image creation, and all image operations, until the
+    #   +render_final+ method is called
+    def initialize(position_mm, size_mm, ppi, opts = {})
       @position_mm = position_mm
       @ppi = ppi
       @size_mm = size_mm
 
-      size_px = @size_mm.map { |mm| ((mm * RcPdfLayout::MM_TO_INCH) * @ppi).to_i }
-      @image = self.class.create_image { |mg| mg.size(size_px.join('x')) }
+      @is_deferred = opts.fetch(:defer_image, true)
+
+      @image_queue = []
+      @image = create_base_image unless @is_deferred
+    end
+
+    # Returns whether image operations are deferred until render time
+    #
+    # @return [true, false]
+    def deferred?
+      @is_deferred
     end
 
     # Perform operations on the object's image in place, returning +self+.
@@ -59,7 +73,13 @@ module RcPdfLayout
     # @yield [MiniMagick::Tool::Mogrify]
     # @return [RcPdfLayout::Object]
     def mogrify(&block)
-      @image.combine_options(&block) if block_given?
+      block = proc { |_| } unless block_given?
+
+      if deferred?
+        @image_queue << [:mogrify, block]
+      else
+        @image.combine_options(&block)
+      end
 
       self
     end
@@ -70,7 +90,13 @@ module RcPdfLayout
     # @yield [MiniMagick::Tool::Composite]
     # @return [RcPdfLayout::Object]
     def composite(image, &block)
-      @image = @image.composite(image, &block)
+      block = proc { |_| } unless block_given?
+
+      if deferred?
+        @image_queue << [:composite, image, block]
+      else
+        @image = @image.composite(image, &block)
+      end
 
       self
     end
@@ -81,8 +107,56 @@ module RcPdfLayout
     #   the +image+ property of the Object.
     #
     # @return [MiniMagick::Image] Rendered image
-    def render_final(_opts = {})
+    def render_final(opts = {})
+      if deferred?
+        create_base_image(opts)
+        image_queue_process
+
+      else
+        ppi = opts.fetch(:force_ppi, @ppi).to_f
+
+        img_size = @size_mm.map { |mm| ((mm * RcPdfLayout::MM_TO_INCH) * ppi).to_i }
+        img_size = opts[:force_size] if opts.key?(:force_size)
+        img_size_px = img_size.join('x')
+
+        @image.combine_options do |mg|
+          mg.resize img_size_px
+          mg.repage '0x0'
+        end
+      end
+
       @image
+    end
+
+    private
+
+    # Create and store the base image for this object
+    def create_base_image(opts = {})
+      ppi = opts.fetch(:force_ppi, @ppi).to_f
+
+      size_px = @size_mm.map { |mm| ((mm * RcPdfLayout::MM_TO_INCH) * ppi).to_i }
+      size_px = opts[:force_size] if opts.key?(:force_size)
+
+      @image = self.class.create_image { |mg| mg.size(size_px.join('x')) }
+    end
+
+    # Process and reset this object's image operation queue
+    def image_queue_process
+      queue = @image_queue
+      @image_queue = []
+
+      queue.each do |op, *args|
+        case op
+        when :mogrify
+          @image.combine_options(&args.first)
+
+        when :composite
+          @image = @image.composite(args.first, &args.last)
+
+        else
+          raise "unknown image operation #{op.inspect}"
+        end
+      end
     end
   end
 end
