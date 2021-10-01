@@ -25,6 +25,11 @@ module RcPdfLayout
 
       MiniMagick::Image.create('.png', false) do |tf|
         out = MiniMagick::Tool::Magick.new do |mg|
+          # Set some important things
+          mg.define('colorspace:auto-grayscale=false')
+          mg.type('TrueColor')
+
+          # Call our block
           block.call(mg)
 
           # Tell ImageMagick to render this from a transparent canvas
