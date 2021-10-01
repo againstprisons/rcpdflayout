@@ -13,18 +13,18 @@ module RcPdfLayout
     # The image containing this object's data
     attr_accessor :image
 
-    # Create a blank image object of the given size.
+    # Create a blank image object.
     #
     # The returned image is fully transparent, and is in the PNG format.
     #
-    # @param width [Integer] Width of the image
-    # @param height [Integer] Height of the image
+    # @yield [MiniMagick::Tool::Magick]
     # @return [MiniMagick::Image] Created image object
-    def self.create_image(width, height)
-      image_size_px = [width, height].join 'x'
+    def self.create_image(&block)
+      block = Proc.new { |_| nil } unless block_given?
+
       MiniMagick::Image.create('.png', false) do |tf|
         out = MiniMagick::Tool::Magick.new do |mg|
-          mg.size image_size_px
+          block.call(mg)
 
           # Tell ImageMagick to render this from a transparent canvas
           mg << 'xc:none'
@@ -51,7 +51,7 @@ module RcPdfLayout
       @size_mm = size_mm
 
       size_px = @size_mm.map { |mm| ((mm * RcPdfLayout::MM_TO_INCH) * @ppi).to_i }
-      @image = self.class.create_image(*size_px)
+      @image = self.class.create_image { |mg| mg.size(size_px.join('x')) }
     end
 
     # Perform operations on the object's image in place, returning +self+.
