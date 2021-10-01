@@ -1,0 +1,16 @@
+/.bundle/
+/vendor/bundle/
+/.yardoc
+/_yardoc/
+/coverage/
+/doc/
+/pkg/
+/spec/reports/
+/tmp/
+
+# environments
+.env
+.envrc
+
+# rspec failure tracking
+.rspec_status
