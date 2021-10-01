@@ -1,0 +1,13 @@
+image: ruby:2.7.4
+
+before_script:
+  - gem install bundler -v 2.2.20
+  - bundle install
+
+test:
+  script:
+    - bundle exec rake spec
+
+lint:
+  script:
+    - bundle exec rake rubocop
