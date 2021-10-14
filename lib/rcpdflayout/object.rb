@@ -20,12 +20,13 @@ module RcPdfLayout
     #
     # @yield [MiniMagick::Tool::Magick]
     # @return [MiniMagick::Image] Created image object
-    def self.create_image(&block)
+    def self.create_image(opts = {}, &block)
       block = proc { |_| } unless block_given?
 
       MiniMagick::Image.create('.png', false) do |tf|
         out = MiniMagick::Tool::Magick.new do |mg|
           # Set some important things
+          mg.define('png:color-type=6')
           mg.define('colorspace:auto-grayscale=false')
           mg.type('TrueColor')
 
@@ -33,7 +34,7 @@ module RcPdfLayout
           block.call(mg)
 
           # Tell ImageMagick to render this from a transparent canvas
-          mg << 'xc:none'
+          mg.xc('none') unless opts[:no_xc]
 
           # Output to stdout as a 32bit PNG
           mg << 'PNG32:-'
