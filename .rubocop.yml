@@ -7,13 +7,22 @@ Metrics/AbcSize:
   Enabled: false
 
 Metrics/PerceivedComplexity:
-  Max: 10
+  Max: 20
 
 Metrics/CyclomaticComplexity:
-  Max: 10
+  Max: 20
+
+Metrics/ClassLength:
+  Enabled: false
 
 Metrics/MethodLength:
-  Max: 50
+  Enabled: false
+
+Metrics/BlockLength:
+  Enabled: false
+
+Metrics/BlockNesting:
+  Enabled: false
 
 Layout/LineLength:
   Max: 120
