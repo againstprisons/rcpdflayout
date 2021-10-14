@@ -21,6 +21,35 @@ module RcPdfLayout
       # @return [String]
       attr_accessor :text
 
+      # Create a text segment object from a markup segment.
+      #
+      # @param position_mm [Array<Float>]
+      #   The position of the object on the page, as an array of +x, y+
+      #   positions, in millimeters, from the top left of the page
+      # @param segment [Hash]
+      #   A single markup segment, in the format output from the
+      #   +RcPdfLayout::TextMarkup#parse_segments+ function
+      # @param opts [Hash]
+      #   Default options where not specified by the markup segment
+      # @param opts :font_name [String] Default font
+      # @param opts :font_size [Integer] Default font size
+      # @param opts :color [String] Default text color
+      # @return [TextSegment] The created segment
+      def self.from_markup_segment(position_mm, segment, opts = {})
+        obj = new(position_mm, segment[:word], opts)
+
+        obj.font_name = segment[:tags]['f'].first if segment[:tags].key?('f')
+        obj.font_size = segment[:tags]['s'].first.to_i if segment[:tags].key?('s')
+        obj.color = segment[:tags]['c'].first if segment[:tags].key?('c')
+        obj.attributes = [
+          ('bold' if segment[:tags].key?('b')),
+          ('italic' if segment[:tags].key?('i')),
+          ('underline' if segment[:tags].key?('u'))
+        ].compact
+
+        obj
+      end
+
       # Create a new text segment
       def initialize(position_mm, text, opts = {})
         super(position_mm, [0, 0], 0, opts.merge({ defer_image: true }))
