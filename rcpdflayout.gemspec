@@ -29,4 +29,5 @@ Gem::Specification.new do |spec|
 
   # List of dependencies
   spec.add_dependency 'mini_magick', '~> 4.11'
+  spec.add_dependency 'commonmarker', '~> 0.22'
 end
