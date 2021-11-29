@@ -3,6 +3,27 @@
 require 'commonmarker'
 
 module RcPdfLayout
+  # Text markup parser.
+  #
+  # The text markup used by RcPdfLayout is relatively simple. Markup tags are
+  # formatted as +^(TAG[,param[,param[,...]]])+ (that is, a carat, a left
+  # parenthesis, the tag name, any parameters to the tag separated by commas,
+  # and then a right parenthesis to close).
+  #
+  # The parser will automatically "close" a single tag when a tag with the same
+  # name is encountered (for example, +^(b)hello^(b) world+ will present the
+  # "hello" in "hello world" as bold). All open tags can be closed with the
+  # +^(r)+ (reset) tag.
+  #
+  # The known tags are as follows:
+  #
+  # * +^(b)+ - bold
+  # * +^(i)+ - italic
+  # * +^(u)+ - underline
+  # * +^(c,COLOR)+ - set text foreground color to +COLOR+
+  # * +^(f,FONT)+ - set text font to +FONT+
+  # * +^(s,SIZE)+ - set text font size to +SIZE+
+  # * +^(r)+ - reset all tags
   module TextMarkup
     # A CommonMarker renderer that outputs RcPdfLayout markup.
     class CommonMarkerRenderer < ::CommonMarker::Renderer
@@ -12,7 +33,7 @@ module RcPdfLayout
 
       def header(_) # :nodoc:
         block do
-          out("^(b)", :children, "^(b)")
+          out('^(b)', :children, '^(b)')
         end
       end
 
@@ -22,7 +43,7 @@ module RcPdfLayout
         blocksep unless @in_tight
       end
 
-      def list(node) # :nodoc:
+      def list(_node) # :nodoc:
         old_in_tight = @in_tight
         @in_tight = true
 
@@ -38,15 +59,16 @@ module RcPdfLayout
       end
 
       def emph(_) # :nodoc:
-        out("^(i)", :children, "^(i)")
+        out('^(i)', :children, '^(i)')
       end
 
       def strong(_) # :nodoc:
-        out("^(b)", :children, "^(b)")
+        out('^(b)', :children, '^(b)')
       end
 
       def blocksep # :nodoc:
         return if @stream.string.empty?
+
         out("\n")
       end
 
