@@ -43,6 +43,12 @@ module RcPdfLayout
         blocksep unless @in_tight
       end
 
+      def blockquote(_) # :nodoc:
+        blocksep unless @in_tight
+        out(:children)
+        blocksep unless @in_tight
+      end
+
       def list(_node) # :nodoc:
         old_in_tight = @in_tight
         @in_tight = true
