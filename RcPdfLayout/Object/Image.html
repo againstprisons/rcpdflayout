@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="UTF-8">
+
+<title>class RcPdfLayout::Object::Image - rcpdflayout documentation</title>
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "../../";
+  var index_rel_prefix = "../../";
+</script>
+
+<script src="../../js/navigation.js" defer></script>
+<script src="../../js/search.js" defer></script>
+<script src="../../js/search_index.js" defer></script>
+<script src="../../js/searcher.js" defer></script>
+<script src="../../js/darkfish.js" defer></script>
+
+<link href="../../css/fonts.css" rel="stylesheet">
+<link href="../../css/rdoc.css" rel="stylesheet">
+
+
+
+
+<body id="top" role="document" class="class">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="../../index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="../../table_of_contents.html#pages">Pages</a>
+    <a href="../../table_of_contents.html#classes">Classes</a>
+    <a href="../../table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+
+  <div id="class-metadata">
+    
+    <div id="parent-class-section" class="nav-section">
+  <h3>Parent</h3>
+
+  
+  <p class="link"><a href="../Object.html">RcPdfLayout::Object</a>
+  
+</div>
+
+    
+    
+    <!-- Method Quickref -->
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
+
+  <ul class="link-list" role="directory">
+    
+    <li class="calls-super" ><a href="#method-c-new">::new</a>
+    
+    <li ><a href="#method-i-render_final">#render_final</a>
+    
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-labelledby="class-RcPdfLayout::Object::Image">
+  <h1 id="class-RcPdfLayout::Object::Image" class="class">
+    class RcPdfLayout::Object::Image
+  </h1>
+
+  <section class="description">
+    
+<p>An image object</p>
+
+  </section>
+
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+    <section class="attribute-method-details" class="method-section">
+      <header>
+        <h3>Attributes</h3>
+      </header>
+
+      
+      <div id="attribute-i-object_image" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">object_image</span><span
+            class="attribute-access-type">[RW]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>The image to render in this object</p>
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-object_image_fit" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">object_image_fit</span><span
+            class="attribute-access-type">[RW]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>How to position the image within this object&#39;s bounds.</p>
+
+<p>Can be <code>:stretch</code> to stretch the image to fit the bounds, or <code>:fit</code> to fit one edge of the image to the bounds. @return [Symbol]</p>
+        
+        </div>
+      </div>
+      
+    </section>
+    
+
+    
+     <section id="public-class-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Class Methods</h3>
+       </header>
+
+    
+      <div id="method-c-new" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">new</span><span
+            class="method-args">(_position_mm, size_mm, ppi, opts = {})</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Create a new image object. @param position_mm [Array&lt;Float&gt;] The position of the object on the page,</p>
+
+<pre>as an array of +x, y+ positions, in millimeters, from the top left of
+the page</pre>
+
+<p>@param size_mm [Array&lt;Float&gt;] The size of the object, as an array of</p>
+
+<pre>+width, height+, in millimeters</pre>
+
+<p>@param ppi [Integer] Number of pixels per inch for this object, used for</p>
+
+<pre>creating the base image object, and final rendering</pre>
+          
+          
+            <div class="method-calls-super">
+              Calls superclass method
+              <a href="../Object.html#method-c-new"><code>RcPdfLayout::Object::new</code></a>
+            </div>
+          
+
+          
+          <div class="method-source-code" id="new-source">
+            <pre><span class="ruby-comment"># File lib/rcpdflayout/object/image.rb, line 25</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">initialize</span>(<span class="ruby-identifier">_position_mm</span>, <span class="ruby-identifier">size_mm</span>, <span class="ruby-identifier">ppi</span>, <span class="ruby-identifier">opts</span> = {})
+  <span class="ruby-keyword">super</span>([<span class="ruby-value">0</span>, <span class="ruby-value">0</span>], <span class="ruby-identifier">size_mm</span>, <span class="ruby-identifier">ppi</span>, <span class="ruby-identifier">opts</span>)
+
+  <span class="ruby-ivar">@object_image</span> = <span class="ruby-keyword">nil</span>
+  <span class="ruby-ivar">@object_image_fit</span> = <span class="ruby-value">:fit</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-render_final" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">render_final</span><span
+            class="method-args">(opts = {})</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Return the final rendered version of this object as an image.</p>
+
+<p>@param opts [Hash] Render options @return [MiniMagick::Image] Rendered image</p>
+          
+          
+
+          
+          <div class="method-source-code" id="render_final-source">
+            <pre><span class="ruby-comment"># File lib/rcpdflayout/object/image.rb, line 36</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">render_final</span>(<span class="ruby-identifier">opts</span> = {})
+  <span class="ruby-identifier">create_base_image</span>(<span class="ruby-identifier">opts</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">deferred?</span>
+
+  <span class="ruby-comment"># Scale object image to our PPI</span>
+  <span class="ruby-identifier">object_image</span> = <span class="ruby-ivar">@object_image</span>.<span class="ruby-identifier">dup</span>
+
+  <span class="ruby-comment"># Calculate resize / final geometry</span>
+  <span class="ruby-identifier">oi_geom</span> = <span class="ruby-keyword">nil</span>
+  <span class="ruby-identifier">oi_gw</span> = <span class="ruby-value">0</span>
+  <span class="ruby-identifier">oi_gh</span> = <span class="ruby-value">0</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@object_image_fit</span> <span class="ruby-operator">==</span> <span class="ruby-value">:fit</span>
+    <span class="ruby-identifier">oi_rw</span> = <span class="ruby-identifier">object_image</span>.<span class="ruby-identifier">width</span>.<span class="ruby-identifier">to_f</span> <span class="ruby-operator">/</span> <span class="ruby-ivar">@image</span>.<span class="ruby-identifier">width</span>
+    <span class="ruby-identifier">oi_rh</span> = <span class="ruby-identifier">object_image</span>.<span class="ruby-identifier">height</span>.<span class="ruby-identifier">to_f</span> <span class="ruby-operator">/</span> <span class="ruby-ivar">@image</span>.<span class="ruby-identifier">height</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">oi_rw</span> <span class="ruby-operator">&gt;</span> <span class="ruby-identifier">oi_rh</span>
+      <span class="ruby-identifier">oi_gh</span> = <span class="ruby-identifier">object_image</span>.<span class="ruby-identifier">height</span>.<span class="ruby-identifier">to_f</span> <span class="ruby-operator">/</span> <span class="ruby-identifier">oi_rw</span>
+      <span class="ruby-identifier">oi_gw</span> = <span class="ruby-ivar">@image</span>.<span class="ruby-identifier">width</span>.<span class="ruby-identifier">to_f</span>
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-identifier">oi_gw</span> = <span class="ruby-identifier">object_image</span>.<span class="ruby-identifier">width</span>.<span class="ruby-identifier">to_f</span> <span class="ruby-operator">/</span> <span class="ruby-identifier">oi_rh</span>
+      <span class="ruby-identifier">oi_gh</span> = <span class="ruby-ivar">@image</span>.<span class="ruby-identifier">height</span>.<span class="ruby-identifier">to_f</span>
+    <span class="ruby-keyword">end</span>
+
+    <span class="ruby-identifier">oi_geom</span> = <span class="ruby-node">&quot;+#{((@image.width.to_f / 2) - (oi_gw / 2)).to_i}+#{((@image.height.to_f / 2) - (oi_gh / 2)).to_i}&quot;</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-identifier">oi_gw</span> = <span class="ruby-ivar">@image</span>.<span class="ruby-identifier">width</span>.<span class="ruby-identifier">to_f</span>
+    <span class="ruby-identifier">oi_gh</span> = <span class="ruby-ivar">@image</span>.<span class="ruby-identifier">height</span>.<span class="ruby-identifier">to_f</span>
+    <span class="ruby-identifier">oi_geom</span> = <span class="ruby-string">&#39;+0+0&#39;</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-comment"># Do resize of object image</span>
+  <span class="ruby-identifier">object_image</span>.<span class="ruby-identifier">combine_options</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">mg</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">mg</span>.<span class="ruby-identifier">resize</span> [<span class="ruby-identifier">oi_gw</span>, <span class="ruby-identifier">oi_gh</span>].<span class="ruby-identifier">join</span>(<span class="ruby-string">&#39;x&#39;</span>)
+    <span class="ruby-identifier">mg</span>.<span class="ruby-identifier">repage</span> <span class="ruby-string">&#39;0x0&#39;</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-comment"># Compose onto final image</span>
+  <span class="ruby-ivar">@image</span> = <span class="ruby-ivar">@image</span>.<span class="ruby-identifier">composite</span>(<span class="ruby-identifier">object_image</span>) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">mg</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">mg</span>.<span class="ruby-identifier">compose</span> <span class="ruby-string">&#39;over&#39;</span>
+    <span class="ruby-identifier">mg</span>.<span class="ruby-identifier">geometry</span> <span class="ruby-identifier">oi_geom</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-comment"># Process queue if deferred</span>
+  <span class="ruby-identifier">image_queue_process</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">deferred?</span>
+
+  <span class="ruby-ivar">@image</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+  </section>
+
+</main>
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="https://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="https://ruby.github.io/rdoc/">RDoc</a> 6.2.1.1.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+
