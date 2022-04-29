@@ -159,11 +159,12 @@ module RcPdfLayout
               # we can adjust from there
 
               r_text = seg[:word]
-              line_avspace = width_mm - line_xpos
               r_char_width = (r_width_mm / r_text.length).to_f
-              r_split_chars = (line_avspace / r_char_width).floor - 1
 
               until r_text.nil? || r_text&.empty?
+                line_avspace = width_mm - line_xpos
+                r_split_chars = (line_avspace / r_char_width).floor - 1
+
                 r_split_seg = seg.dup
                 r_split_seg[:word] = r_text[0..r_split_chars]
                 r_split_seg[:word] += '-' if r_split_seg[:word].length < r_text.length
