@@ -134,14 +134,14 @@ module RcPdfLayout
             # to the next line, or to break it. Here's the logic.
             #
             # If we would need to split this segment near the start (which
-            # we'll define as "less than one quarter of it's current width"),
+            # we'll define as "less than one half of it's current width"),
             # just bump it entirely to the next line.
             #
             # Otherwise, split it as close to the boundary as we can, allowing
             # for the insertion of an ASCII hyphen character at the end of the
             # current line to signify continuation.
 
-            if line_xpos + (r_width_mm / 4) > width_mm
+            if line_xpos + (r_width_mm / 2) > width_mm
               # Bump to next line
               lines << line_segs
               line_segs = []
@@ -161,7 +161,7 @@ module RcPdfLayout
               r_text = seg[:word]
               line_avspace = width_mm - line_xpos
               r_char_width = (r_width_mm / r_text.length).to_f
-              r_split_chars = (line_avspace / r_char_width).floor
+              r_split_chars = (line_avspace / r_char_width).floor - 1
 
               until r_text.nil? || r_text&.empty?
                 r_split_seg = seg.dup
@@ -191,9 +191,9 @@ module RcPdfLayout
                   # cut +r_text+ at the length of the split, check if we need
                   # to create a new line (and do so), and maybe iterate again.
                   line_segs << r_split_tseg
-                  r_text = r_text[r_split_chars..]
+                  r_text = r_text[(r_split_chars + 1)..]
 
-                  # If +r_text is now empty, we're at the end of this segment,
+                  # If +r_text+ is now empty, we're at the end of this segment,
                   # so we don't need to create a new line.
                   unless r_text.nil? || r_text&.empty?
                     lines << line_segs
