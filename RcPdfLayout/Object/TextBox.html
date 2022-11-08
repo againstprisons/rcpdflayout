@@ -273,16 +273,11 @@ represents a single line of text that fits within the boundary.</pre>
     <span class="ruby-identifier">r_width_mm</span> = (<span class="ruby-identifier">rimg</span>.<span class="ruby-identifier">width</span>.<span class="ruby-identifier">to_i</span> <span class="ruby-operator">/</span> <span class="ruby-identifier">ppi</span>) <span class="ruby-operator">/</span> <span class="ruby-constant">RcPdfLayout</span><span class="ruby-operator">::</span><span class="ruby-constant">MM_TO_INCH</span>
     <span class="ruby-keyword">if</span> <span class="ruby-identifier">line_xpos</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">r_width_mm</span> <span class="ruby-operator">&gt;</span> <span class="ruby-identifier">width_mm</span>
       <span class="ruby-comment"># We need to decide here whether to just wholly bump this segment</span>
-      <span class="ruby-comment"># to the next line, or to break it. Here&#39;s the logic.</span>
-      <span class="ruby-comment">#</span>
-      <span class="ruby-comment"># If we would need to split this segment near the start (which</span>
-      <span class="ruby-comment"># we&#39;ll define as &quot;less than one half of it&#39;s current width&quot;),</span>
-      <span class="ruby-comment"># just bump it entirely to the next line.</span>
-      <span class="ruby-comment">#</span>
-      <span class="ruby-comment"># Otherwise, split it as close to the boundary as we can, allowing</span>
-      <span class="ruby-comment"># for the insertion of an ASCII hyphen character at the end of the</span>
-      <span class="ruby-comment"># current line to signify continuation.</span>
+      <span class="ruby-comment"># to the next line, or to break it.</span>
 
+      <span class="ruby-comment"># First check: If we would need to split this segment near the start</span>
+      <span class="ruby-comment"># (which we&#39;ll define as &quot;less than one half of it&#39;s current width&quot;),</span>
+      <span class="ruby-comment"># just bump it entirely to the next line.</span>
       <span class="ruby-keyword">if</span> <span class="ruby-identifier">line_xpos</span> <span class="ruby-operator">+</span> (<span class="ruby-identifier">r_width_mm</span> <span class="ruby-operator">/</span> <span class="ruby-value">2</span>) <span class="ruby-operator">&gt;</span> <span class="ruby-identifier">width_mm</span>
         <span class="ruby-comment"># Bump to next line</span>
         <span class="ruby-identifier">lines</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">line_segs</span>
@@ -290,9 +285,19 @@ represents a single line of text that fits within the boundary.</pre>
         <span class="ruby-identifier">line_xpos</span> = <span class="ruby-value">0</span>
       <span class="ruby-keyword">end</span>
 
-      <span class="ruby-comment"># Duplicate of the original check: if we&#39;re longer than the line</span>
-      <span class="ruby-comment"># will allow (even after a potential line bump), then split the</span>
-      <span class="ruby-comment"># segment. Otherwise, append to the current line as usual</span>
+      <span class="ruby-comment"># Check again, this time accounting for &quot;short&quot; segments: If the</span>
+      <span class="ruby-comment"># segment width is less than 1/8th of the text box width (or 20mm,</span>
+      <span class="ruby-comment"># whichever is larger), and we would have to split this segment at</span>
+      <span class="ruby-comment"># all, bump it.</span>
+      <span class="ruby-keyword">if</span> <span class="ruby-identifier">line_xpos</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">r_width_mm</span> <span class="ruby-operator">&gt;</span> <span class="ruby-identifier">width_mm</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">r_width_mm</span> <span class="ruby-operator">&lt;</span> [<span class="ruby-identifier">width_mm</span> <span class="ruby-operator">/</span> <span class="ruby-value">8</span>, <span class="ruby-value">20</span>].<span class="ruby-identifier">max</span>
+        <span class="ruby-identifier">lines</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">line_segs</span>
+        <span class="ruby-identifier">line_segs</span> = []
+        <span class="ruby-identifier">line_xpos</span> = <span class="ruby-value">0</span>
+      <span class="ruby-keyword">end</span>
+
+      <span class="ruby-comment"># If our segment is longer than a single line will allow</span>
+      <span class="ruby-comment"># (even after a potential line bump), then split the segment.</span>
+      <span class="ruby-comment"># Otherwise, append to the current line as usual</span>
       <span class="ruby-keyword">if</span> <span class="ruby-identifier">line_xpos</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">r_width_mm</span> <span class="ruby-operator">&gt;</span> <span class="ruby-identifier">width_mm</span>
         <span class="ruby-comment"># Do a rough guess as to where we need to split based on the</span>
         <span class="ruby-comment"># length of the segment&#39;s text (in characters) compared to the</span>
