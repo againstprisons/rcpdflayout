@@ -131,16 +131,11 @@ module RcPdfLayout
           r_width_mm = (rimg.width.to_i / ppi) / RcPdfLayout::MM_TO_INCH
           if line_xpos + r_width_mm > width_mm
             # We need to decide here whether to just wholly bump this segment
-            # to the next line, or to break it. Here's the logic.
-            #
-            # If we would need to split this segment near the start (which
-            # we'll define as "less than one half of it's current width"),
-            # just bump it entirely to the next line.
-            #
-            # Otherwise, split it as close to the boundary as we can, allowing
-            # for the insertion of an ASCII hyphen character at the end of the
-            # current line to signify continuation.
+            # to the next line, or to break it.
 
+            # First check: If we would need to split this segment near the start
+            # (which we'll define as "less than one half of it's current width"),
+            # just bump it entirely to the next line.
             if line_xpos + (r_width_mm / 2) > width_mm
               # Bump to next line
               lines << line_segs
@@ -148,9 +143,19 @@ module RcPdfLayout
               line_xpos = 0
             end
 
-            # Duplicate of the original check: if we're longer than the line
-            # will allow (even after a potential line bump), then split the
-            # segment. Otherwise, append to the current line as usual
+            # Check again, this time accounting for "short" segments: If the
+            # segment width is less than 1/8th of the text box width (or 20mm,
+            # whichever is larger), and we would have to split this segment at
+            # all, bump it.
+            if line_xpos + r_width_mm > width_mm && r_width_mm < [width_mm / 8, 20].max
+              lines << line_segs
+              line_segs = []
+              line_xpos = 0
+            end
+
+            # If our segment is longer than a single line will allow
+            # (even after a potential line bump), then split the segment.
+            # Otherwise, append to the current line as usual
             if line_xpos + r_width_mm > width_mm
               # Do a rough guess as to where we need to split based on the
               # length of the segment's text (in characters) compared to the
