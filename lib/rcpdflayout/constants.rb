@@ -2,7 +2,7 @@
 
 module RcPdfLayout
   # RcPdfLayout version number
-  VERSION = '0.1.0.pre.1'
+  VERSION = '0.1.0.pre.2'
 
   # :section: Page size constants
 
