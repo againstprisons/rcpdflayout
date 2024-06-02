@@ -1,13 +1,13 @@
-Tue, 08 Nov 2022 06:35:15 +0000
-./README.md	Tue, 08 Nov 2022 06:35:04 +0000
-./lib/rcpdflayout.rb	Tue, 08 Nov 2022 06:35:04 +0000
-./lib/rcpdflayout/object.rb	Tue, 08 Nov 2022 06:35:04 +0000
-./lib/rcpdflayout/constants.rb	Tue, 08 Nov 2022 06:35:04 +0000
-./lib/rcpdflayout/text_markup/markdown.rb	Tue, 08 Nov 2022 06:35:04 +0000
-./lib/rcpdflayout/object/page.rb	Tue, 08 Nov 2022 06:35:04 +0000
-./lib/rcpdflayout/object/text_segment.rb	Tue, 08 Nov 2022 06:35:04 +0000
-./lib/rcpdflayout/object/image.rb	Tue, 08 Nov 2022 06:35:04 +0000
-./lib/rcpdflayout/object/text_box.rb	Tue, 08 Nov 2022 06:35:04 +0000
-./lib/rcpdflayout/utils.rb	Tue, 08 Nov 2022 06:35:04 +0000
-./lib/rcpdflayout/document.rb	Tue, 08 Nov 2022 06:35:04 +0000
-./lib/rcpdflayout/text_markup.rb	Tue, 08 Nov 2022 06:35:04 +0000
+Sun, 02 Jun 2024 10:36:39 +0000
+./README.md	Sun, 02 Jun 2024 10:36:16 +0000
+./lib/rcpdflayout/text_markup.rb	Sun, 02 Jun 2024 10:36:16 +0000
+./lib/rcpdflayout/object.rb	Sun, 02 Jun 2024 10:36:16 +0000
+./lib/rcpdflayout/object/text_segment.rb	Sun, 02 Jun 2024 10:36:16 +0000
+./lib/rcpdflayout/object/page.rb	Sun, 02 Jun 2024 10:36:16 +0000
+./lib/rcpdflayout/object/text_box.rb	Sun, 02 Jun 2024 10:36:16 +0000
+./lib/rcpdflayout/object/image.rb	Sun, 02 Jun 2024 10:36:16 +0000
+./lib/rcpdflayout/utils.rb	Sun, 02 Jun 2024 10:36:16 +0000
+./lib/rcpdflayout/text_markup/markdown.rb	Sun, 02 Jun 2024 10:36:16 +0000
+./lib/rcpdflayout/document.rb	Sun, 02 Jun 2024 10:36:16 +0000
+./lib/rcpdflayout/constants.rb	Sun, 02 Jun 2024 10:36:16 +0000
+./lib/rcpdflayout.rb	Sun, 02 Jun 2024 10:36:16 +0000

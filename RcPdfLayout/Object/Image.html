@@ -153,7 +153,7 @@
         
         <div class="method-heading">
           <span class="method-name">new</span><span
-            class="method-args">(_position_mm, size_mm, ppi, opts = {})</span>
+            class="method-args">(position_mm, size_mm, ppi, opts = {})</span>
           
           <span class="method-click-advice">click to toggle source</span>
           
@@ -185,8 +185,8 @@ the page</pre>
           
           <div class="method-source-code" id="new-source">
             <pre><span class="ruby-comment"># File lib/rcpdflayout/object/image.rb, line 25</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">initialize</span>(<span class="ruby-identifier">_position_mm</span>, <span class="ruby-identifier">size_mm</span>, <span class="ruby-identifier">ppi</span>, <span class="ruby-identifier">opts</span> = {})
-  <span class="ruby-keyword">super</span>([<span class="ruby-value">0</span>, <span class="ruby-value">0</span>], <span class="ruby-identifier">size_mm</span>, <span class="ruby-identifier">ppi</span>, <span class="ruby-identifier">opts</span>)
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">initialize</span>(<span class="ruby-identifier">position_mm</span>, <span class="ruby-identifier">size_mm</span>, <span class="ruby-identifier">ppi</span>, <span class="ruby-identifier">opts</span> = {})
+  <span class="ruby-keyword">super</span>(<span class="ruby-identifier">position_mm</span>, <span class="ruby-identifier">size_mm</span>, <span class="ruby-identifier">ppi</span>, <span class="ruby-identifier">opts</span>)
 
   <span class="ruby-ivar">@object_image</span> = <span class="ruby-keyword">nil</span>
   <span class="ruby-ivar">@object_image_fit</span> = <span class="ruby-value">:fit</span>
