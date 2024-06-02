@@ -22,8 +22,8 @@ module RcPdfLayout
       #   +width, height+, in millimeters
       # @param ppi [Integer] Number of pixels per inch for this object, used for
       #   creating the base image object, and final rendering
-      def initialize(_position_mm, size_mm, ppi, opts = {})
-        super([0, 0], size_mm, ppi, opts)
+      def initialize(position_mm, size_mm, ppi, opts = {})
+        super(position_mm, size_mm, ppi, opts)
 
         @object_image = nil
         @object_image_fit = :fit
